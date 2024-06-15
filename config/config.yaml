@@ -1,0 +1,18 @@
+db:
+  db_user: "postgres"
+  db_pass: "postgres"
+  db_name: "postgres"
+  ssl_mode: "disable"
+  port: "5432"
+server:
+  timeout: 15s
+  idle_timeout: 30s
+  address: "0.0.0.0:63342"
+broker:
+  MaxReconnects: 5
+  ReconnectWait: 5s
+  Address: "nats://nats:4222"
+  Retry: Yes
+file_server:
+  storage_folder: "./data"
+  url_path: "static"
