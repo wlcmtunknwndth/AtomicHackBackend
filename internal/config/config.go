@@ -42,10 +42,11 @@ type Broker struct {
 }
 
 type Config struct {
-	Db         Database   `yaml:"db"`
-	Server     Server     `yaml:"server"`
-	Broker     Broker     `yaml:"broker"`
-	FileServer FileServer `yaml:"file_server"`
+	Db           Database   `yaml:"db"`
+	Server       Server     `yaml:"server"`
+	Broker       Broker     `yaml:"broker"`
+	FileServer   FileServer `yaml:"file_server"`
+	ReceiverAddr string     `yaml:"receiver_addr"`
 }
 
 func MustLoad() *Config {

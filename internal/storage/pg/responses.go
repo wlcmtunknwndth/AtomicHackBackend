@@ -10,10 +10,11 @@ func (s *Storage) SaveResponse(response *storage.Response) error {
 	if err := s.db.Create(response).Error; err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}
+	//s.db.Create(response)
 	return nil
 }
 
-func (s *Storage) GetResponse(id uint64) (*storage.Response, error) {
+func (s *Storage) GetResponse(id string) (*storage.Response, error) {
 	const op = "internal.storage.pg.SaveRequest"
 	var response storage.Response
 	if err := s.db.First(&response, id).Error; err != nil {

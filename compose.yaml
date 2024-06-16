@@ -6,7 +6,7 @@ services:
     ports:
       - "63342:63342"
     environment:
-      - config_path=/bin/config.yaml
+      - config_path=/bin/server/config.yaml
     networks: ["nats"]
     depends_on:
       postgres:

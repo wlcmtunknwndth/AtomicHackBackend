@@ -19,9 +19,9 @@ const (
 func (b *Broker) ResponseFinder() (*nats.Subscription, error) {
 	const op = "internal.broker.nats.ResponseFinder"
 	sub, err := b.conn.Subscribe(MustFindRequest, func(msg *nats.Msg) {
-		id, err := convertStrToUint(msg.Subject[5:])
-		if err != nil {
-			slog.Error("couldn't convert wildcard var to uint64", slogResp.Error(op, err))
+		id := msg.Subject[5:]
+		if len([]byte(id)) == 16 {
+			slog.Error("couldn't convert wildcard var to uint64", slogResp.Info(op, id))
 			return
 		}
 
@@ -80,9 +80,9 @@ func (b *Broker) AskSaveResponse(response *storage.Response) error {
 	return nil
 }
 
-func (b *Broker) AskResponse(id uint64) ([]byte, error) {
+func (b *Broker) AskResponse(id string) ([]byte, error) {
 	const op = "internal.broker.nats.AskRequest"
-	msg, err := b.conn.Request(AskFindResponse+convertUintToStr(id), nil, 5*time.Second)
+	msg, err := b.conn.Request(AskFindResponse+id, nil, 5*time.Second)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}

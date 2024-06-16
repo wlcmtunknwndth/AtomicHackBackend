@@ -10,9 +10,9 @@ import (
 
 type Storage interface {
 	SaveRequest(*storage.Request) error
-	GetRequest(uint64) (*storage.Request, error)
+	GetRequest(string) (*storage.Request, error)
 	SaveResponse(response *storage.Response) error
-	GetResponse(uint64) (*storage.Response, error)
+	GetResponse(string) (*storage.Response, error)
 }
 
 type Broker struct {

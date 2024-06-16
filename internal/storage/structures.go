@@ -1,11 +1,12 @@
 package storage
 
 import (
+	"github.com/google/uuid"
 	"github.com/lib/pq"
 )
 
 type Model struct {
-	ID uint `gorm:"primaryKey" json:"id"`
+	ID uuid.UUID `gorm:"primaryKey;uniqueIndex;type:uuid" json:"id"`
 	//CreatedAt time.Time      `json:"created_at"`
 	//UpdatedAt time.Time      `json:"updated_at"`
 	//DeletedAt gorm.DeletedAt `gorm:"index" json:"deleted_at"`

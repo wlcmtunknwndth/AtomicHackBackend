@@ -17,7 +17,7 @@ type Storage struct {
 }
 
 func New(config *config.Database) (*Storage, error) {
-	const op = "internal.storage.postges.New"
+	const op = "internal.storage.postgres.New"
 	connStr := fmt.Sprintf("postgres://%s:%s@postgres:%s/%s?sslmode=%s",
 		config.DbUser, config.DbPass, config.Port,
 		config.DbName, config.SslMode,

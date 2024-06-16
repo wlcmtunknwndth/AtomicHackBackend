@@ -24,12 +24,14 @@ RUN --mount=type=cache,target=/var/cache/apk \
         && \
         update-ca-certificates
 
+RUN mkdir /bin/server
+
 ARG UID=10001
 USER root
 
-COPY --from=build /bin/server /bin/
-COPY ./config/config.yaml /bin
+COPY --from=build /bin/server /bin/server/
+COPY  ./config/config.yaml /bin/server/
 
 EXPOSE 63342
 
-ENTRYPOINT [ "/bin/server" ]
+ENTRYPOINT [ "/bin/server/server" ]

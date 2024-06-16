@@ -9,10 +9,11 @@ server:
   idle_timeout: 30s
   address: "0.0.0.0:63342"
 broker:
-  MaxReconnects: 5
-  ReconnectWait: 5s
-  Address: "nats://nats:4222"
-  Retry: Yes
+  max_reconnects: 5
+  reconnect_wait: 5s
+  address: "nats://nats:4222"
+  retry: Yes
 file_server:
-  storage_folder: "./data"
-  url_path: "static"
+  storage_folder: "./data" # absolute path folder or from
+  url_path: "static" # address/<url_path>/
+receiver_addr: "ws://0.0.0.0:63345/"

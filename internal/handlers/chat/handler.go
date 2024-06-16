@@ -6,23 +6,25 @@ import (
 )
 
 type Storage interface {
-	AskRequest(id uint64) ([]byte, error)
+	AskRequest(id string) ([]byte, error)
 	AskSaveRequest(request *storage.Request) error
 	AskSaveResponse(response *storage.Response) error
-	AskResponse(id uint64) ([]byte, error)
+	AskResponse(id string) ([]byte, error)
 }
 
 type Handler struct {
-	ws      websocket.Upgrader
-	storage Storage
+	ws              websocket.Upgrader
+	storage         Storage
+	receiverAddress string
 }
 
-func New(ReadBufSize, WriteBufSize int, storage Storage) *Handler {
+func New(ReadBufSize, WriteBufSize int, storage Storage, addr string) *Handler {
 	return &Handler{
 		ws: websocket.Upgrader{
 			ReadBufferSize:  ReadBufSize,
 			WriteBufferSize: WriteBufSize,
 		},
-		storage: storage,
+		storage:         storage,
+		receiverAddress: addr,
 	}
 }

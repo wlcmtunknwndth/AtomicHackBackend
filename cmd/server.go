@@ -6,6 +6,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/wlcmtunknwndth/AtomicHackBackend/internal/broker/nats"
 	"github.com/wlcmtunknwndth/AtomicHackBackend/internal/config"
+	"github.com/wlcmtunknwndth/AtomicHackBackend/internal/handlers/chat"
 	"github.com/wlcmtunknwndth/AtomicHackBackend/internal/storage/pg"
 	"github.com/wlcmtunknwndth/AtomicHackBackend/lib/slogResp"
 	"log/slog"
@@ -75,6 +76,9 @@ func main() {
 		return
 	}
 	defer respSaver.Unsubscribe()
+
+	handler := chat.New(2048, 2048, broker, cfg.ReceiverAddr)
+	router.HandleFunc("/front-ws", handler.HandleConnections)
 
 	if err = srv.ListenAndServe(); err != nil {
 		slog.Error("failed to run server", slogResp.Error(scope, err))

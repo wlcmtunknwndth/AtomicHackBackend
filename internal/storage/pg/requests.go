@@ -13,7 +13,7 @@ func (s *Storage) SaveRequest(request *storage.Request) error {
 	return nil
 }
 
-func (s *Storage) GetRequest(id uint64) (*storage.Request, error) {
+func (s *Storage) GetRequest(id string) (*storage.Request, error) {
 	const op = "internal.storage.postgres.GetRequest"
 	var request storage.Request
 	if err := s.db.First(&request, id).Error; err != nil {

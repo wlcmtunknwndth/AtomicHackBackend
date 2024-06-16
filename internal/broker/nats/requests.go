@@ -7,7 +7,6 @@ import (
 	"github.com/wlcmtunknwndth/AtomicHackBackend/internal/storage"
 	"github.com/wlcmtunknwndth/AtomicHackBackend/lib/slogResp"
 	"log/slog"
-	"strconv"
 	"time"
 )
 
@@ -17,20 +16,20 @@ const (
 	MustFindRequest = AskFindRequest + "*"
 )
 
-func convertStrToUint(str string) (uint64, error) {
-	return strconv.ParseUint(str, 10, 64)
-}
-
-func convertUintToStr(id uint64) string {
-	return strconv.FormatUint(id, 10)
-}
+//func convertStrToUint(str string) (uint64, error) {
+//	return strconv.ParseUint(str, 10, 64)
+//}
+//
+//func convertUintToStr(id uint64) string {
+//	return strconv.FormatUint(id, 10)
+//}
 
 func (b *Broker) RequestFinder() (*nats.Subscription, error) {
 	const op = "internal.broker.nats.RequestFinder"
 	sub, err := b.conn.Subscribe(MustFindRequest, func(msg *nats.Msg) {
-		id, err := convertStrToUint(msg.Subject[4:])
-		if err != nil {
-			slog.Error("couldn't convert wildcard var to uint64", slogResp.Error(op, err))
+		id := msg.Subject[4:]
+		if len([]byte(id)) != 16 {
+			slog.Error("couldn't get uuid from wildcard", slogResp.Info(op, id))
 			return
 		}
 
@@ -89,9 +88,9 @@ func (b *Broker) AskSaveRequest(request *storage.Request) error {
 	return nil
 }
 
-func (b *Broker) AskRequest(id uint64) ([]byte, error) {
+func (b *Broker) AskRequest(id string) ([]byte, error) {
 	const op = "internal.broker.nats.AskRequest"
-	msg, err := b.conn.Request(AskFindRequest+convertUintToStr(id), nil, 5*time.Second)
+	msg, err := b.conn.Request(AskFindRequest+id, nil, 5*time.Second)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
